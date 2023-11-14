@@ -22,3 +22,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     mine.blit(background, (0, 0))
+
+
+    pygame.display.flip()
