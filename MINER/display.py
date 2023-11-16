@@ -30,17 +30,3 @@ def draw_background(mine):
     mine.blit(text, (screen_width/2 - text.get_width()/2, screen_height / 9 - text.get_height()/1.5))
 
 
-class Diamonds(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.image = pygame.image.load("../assets/sprites/diamond.png").convert()
-        self.image.set_colorkey((255, 255, 255))
-        self.rect = self.image.get_rect()
-        self.x = x
-        self.y = y
-        self.rect.center = (x, y)
-
-    def place(self):
-        for _ in range(7):
-            x = random.randint(0, screen_width)
-            mine.blit(self.image, (x, screen_height - tile_size * 2 + 5))

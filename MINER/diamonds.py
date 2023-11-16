@@ -11,8 +11,8 @@ class Diamonds(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         # Choose random loaction.
-        self.x = random.randint(0, screen_width)
-        self.y = random.randint(0, screen_height)
+        self.x = random.randint(0, screen_width-tile_size/2)
+        self.y = random.randint(0, screen_height-tile_size*2)
 
         self.rect.center = (self.x, self.y)
 
