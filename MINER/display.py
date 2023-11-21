@@ -3,6 +3,7 @@ from gameparameters import *
 import random
 
 
+
 #draw background
 def draw_background(mine):
     dirt1 = pygame.image.load("../assets/sprites/dirt1.png").convert()

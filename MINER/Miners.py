@@ -56,8 +56,23 @@ while running:
 #print diamonds
     for diamond in diamond_list:
         diamond.draw_diamonds(mine)
+        result = pygame.sprite.collide_rect(player, diamond)
+        print(result)
+        if result:
+            diamond_list.pop()
         #pop when collide with character
     pygame.display.flip()
 
+score = len(diamond_list)
 
-    pygame.display.flip()
+#create screen for game over
+mine.blit(background, (0, 0))
+font = pygame.font.Font("../assets/fonts/Montague.ttf", 115)
+message = font.render("GAME OVER", True, (0, 0, 0))
+mine.blit(message, (screen_width/2 - message.get_width()/2, screen_height/2))
+score_text = font.render(f'Score: {score}', True, (0, 0, 0))
+mine.blit(score_text, (screen_width/2 - score_text.get_width()/2, screen_height/2 +score_text.get_height()))
+time.sleep(2)
+pygame.display.flip()
+
+
