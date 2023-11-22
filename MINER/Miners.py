@@ -5,6 +5,7 @@ from gameparameters import *
 from display import *
 from diamonds import *
 from player import *
+from dynamite import Dynamite
 
 #make a main menu
 #fix the movement bug
@@ -12,7 +13,7 @@ from player import *
 #make dirt change color once dug
 #make sprites spawn on upper left and right corners of dirt
 #stop diamonds from spawning in the sky
-#make dinamite
+#make dynamite (line 117)
 
 
 #initialize pygame
@@ -34,7 +35,14 @@ diamond_list = []
 for _ in range(0, num_diamonds):
     diamond_list.append(Diamonds(mine))
 
-#miner
+#make dynamite
+num_dynamite = 3
+dynamite_list = []
+for _ in range(0, num_dynamite):
+    dynamite_list.append(Dynamite(mine))
+
+
+#inicializining the two players
 player1 = Player1(screen_width/2, screen_height/2)
 p1_score = 0
 player2 = Player2(screen_width/2, screen_height/2)
@@ -106,6 +114,14 @@ while running and diamond_list:
         else:
             idx2 += 1
 
+    #dynamite explotion
+    for dynamite in dynamite_list:
+        dynamite.draw_dynamyte(mine)
+        bang1 = pygame.sprite.collide_rect(player1, dynamite)
+        bang2 = pygame.sprite.collide_rect(player2, dynamite)
+        #if bang1 or bang2:
+
+
     pygame.display.flip()
 
 
@@ -113,7 +129,7 @@ while running and diamond_list:
 #create screen for game over
 
 mine.blit(background, (0, 0))
-font = pygame.font.Font("../assets/fonts/Montague.ttf", 100)
+font = pygame.font.Font("../assets/fonts/Montague.ttf", 95)
 message = font.render("GAME OVER", True, (0, 0, 0))
 mine.blit(message, (screen_width/2 - message.get_width()/2, screen_height/6))
 score1_text = font.render(f'PLAYER 1 SCORE: {p1_score}', True, (0, 0, 0))
