@@ -12,8 +12,13 @@ from dynamite import Dynamite
 #make a closing menu
 #make dirt change color once dug
 #make sprites spawn on upper left and right corners of dirt
-#stop diamonds from spawning in the sky
+##stop diamonds from spawning in the sky
+#make time.sleep work while mining diamonds
 #make dynamite (line 117)
+#import sound effects
+#maybe add levels
+#display scores on screen while playing
+#insert clock
 
 
 #initialize pygame
@@ -25,12 +30,16 @@ pygame.display.set_caption("the children yern for the mines")
 #set clock
 clock = pygame.time.Clock()
 
+
 running = True
 background = mine.copy()
 draw_background(background)
 
+#set up timer (all help on clock was assisted by alex Dachos)
+start_time = pygame.time.get_ticks()
+
 #draw diamond
-num_diamonds = 5
+num_diamonds = 7
 diamond_list = []
 for _ in range(0, num_diamonds):
     diamond_list.append(Diamonds(mine))
@@ -41,6 +50,9 @@ dynamite_list = []
 for _ in range(0, num_dynamite):
     dynamite_list.append(Dynamite(mine))
 
+#sounds
+music = pygame.mixer.Sound("../assets/sounds/miners song.wav")
+boom = pygame.mixer.Sound("../assets/sounds/hurt.wav")
 
 #inicializining the two players
 player1 = Player1(screen_width/2, screen_height/2)
@@ -50,6 +62,7 @@ p2_score = 0
 
 #when the list is empty set running to false
 while running and diamond_list:
+    pygame.mixer.Sound.play(music)
     for event in pygame.event.get():
         #print(event)
         if event.type == pygame.QUIT:
@@ -72,13 +85,25 @@ while running and diamond_list:
             if event.key == pygame.K_d:
                 player2.move_right()
         if event.type == pygame.KEYUP:
-            if event.type == pygame.K_UP or pygame.K_LEFT or pygame.K_DOWN or pygame.K_RIGHT:
+            print(event.key)
+            if event.key == pygame.K_UP:
                 player1.stop()
-            if event.type == pygame.K_a or pygame.K_d or pygame.K_s or pygame.K_w:
+            if event.key == pygame.K_DOWN:
+                player1.stop()
+            if event.key == pygame.K_LEFT:
+                player1.stop()
+            if event.key == pygame.K_RIGHT:
+                player1.stop()
+            if event.key == pygame.K_w:
                 player2.stop()
-## this idea did not work
-            #update to make only one player stop K_A OR K_S OR K_d
+            if event.key == pygame.K_s:
+                player2.stop()
+            if event.key == pygame.K_a:
+                player2.stop()
+            if event.key == pygame.K_d:
+                player2.stop()
 
+#stop once no more dimonds
     if diamond_list == 0:
         pygame.quit()
 
@@ -90,6 +115,14 @@ while running and diamond_list:
     player1.draw(mine)
     player2.update()
     player2.draw(mine)
+
+#calculate time
+    running_time = (pygame.time.get_ticks()-start_time) // 1000
+#draw timer
+    timer = pygame.font.Font("../assets/fonts/Montague.ttf",25)
+    clock = timer.render(f"{running_time}", True, (0, 0, 0))
+    mine.blit(clock, (10,10))
+
     idx1 = 0
     idx2 = 0
 #print diamonds
@@ -98,8 +131,10 @@ while running and diamond_list:
         result1 = pygame.sprite.collide_rect(player1, diamond)
         result2 = pygame.sprite.collide_rect(player2, diamond)
         if result1:
+            #player1.update().pause()
             diamond_list.pop(idx1)
             p1_score += 1
+            pygame.mixer.Sound.play(boom)
         #pop when collide with character
         if idx1 == len(diamond_list):
             idx1 = 0
@@ -107,6 +142,7 @@ while running and diamond_list:
             idx1 += 1
 
         if result2:
+            #player2.update().time.sleep()
             diamond_list.pop(idx2)
             p2_score += 1
         if idx2 == len(diamond_list):
@@ -116,10 +152,13 @@ while running and diamond_list:
 
     #dynamite explotion
     for dynamite in dynamite_list:
-        dynamite.draw_dynamyte(mine)
+        dynamite.draw_dynamite(mine)
         bang1 = pygame.sprite.collide_rect(player1, dynamite)
         bang2 = pygame.sprite.collide_rect(player2, dynamite)
-        #if bang1 or bang2:
+        if bang1 or bang2:
+            print("Bang")
+            dynamite.boom(mine)
+            
 
 
     pygame.display.flip()

@@ -15,8 +15,13 @@ class Dynamite(pygame.sprite.Sprite):
 
         # Choose random loaction.
         self.x = random.randint(0, screen_width-tile_size/2)
-        self.y = random.randint(0, screen_height-tile_size*2)
+        self.y = random.randint(100, screen_height-tile_size*2)
 
         self.rect.center = (self.x, self.y)
 
+    def draw_dynamite(self, scr):
+        # Copy to screen.
+        scr.blit(self.image1, (self.x, self.y))
 
+    def boom(self, scr):
+        scr.blit(self.image2, (self.x, self.y))
