@@ -39,7 +39,7 @@ draw_background(background)
 start_time = pygame.time.get_ticks()
 
 #draw diamond
-num_diamonds = 7
+num_diamonds = 11
 diamond_list = []
 for _ in range(0, num_diamonds):
     diamond_list.append(Diamonds(mine))
@@ -49,6 +49,7 @@ num_dynamite = 3
 dynamite_list = []
 for _ in range(0, num_dynamite):
     dynamite_list.append(Dynamite(mine))
+
 
 #sounds
 music = pygame.mixer.Sound("../assets/sounds/miners song.wav")
@@ -122,9 +123,11 @@ while running and diamond_list:
     timer = pygame.font.Font("../assets/fonts/Montague.ttf",25)
     clock = timer.render(f"{running_time}", True, (0, 0, 0))
     mine.blit(clock, (10,10))
-
+#indexing the dimonds and dynamite
     idx1 = 0
     idx2 = 0
+    idxe1 = 0
+    idxe2 = 0
 #print diamonds
     for diamond in diamond_list:
         diamond.draw_diamonds(mine)
@@ -150,15 +153,39 @@ while running and diamond_list:
         else:
             idx2 += 1
 
+
     #dynamite explotion
     for dynamite in dynamite_list:
         dynamite.draw_dynamite(mine)
         bang1 = pygame.sprite.collide_rect(player1, dynamite)
         bang2 = pygame.sprite.collide_rect(player2, dynamite)
-        if bang1 or bang2:
-            print("Bang")
+        if bang1:
+            # player1.update().pause()
             dynamite.boom(mine)
-            
+            #dynamite_list.pop(idxe1)
+            p1_score -= 1
+            pygame.mixer.Sound.play(boom)
+            # pop when collide with character
+        if idxe1 == len(dynamite_list):
+            idxe1 = 0
+        else:
+            idxe1 += 1
+
+        if bang2:
+            # player2.update().time.sleep()
+            dynamite.boom(mine)
+            time.sleep(0.5)
+            dynamite_list.pop(idxe2)
+            p2_score -= 1
+        if idxe2 == len(diamond_list):
+            idxe2 = 0
+        else:
+            idxe2 += 1
+
+
+
+
+
 
 
     pygame.display.flip()
