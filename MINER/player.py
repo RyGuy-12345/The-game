@@ -58,6 +58,7 @@ class Player1(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        self.rect.x = 64
 
 class Player2(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -95,7 +96,6 @@ class Player2(pygame.sprite.Sprite):
         self.y_speed = 0
 
     def update(self):
-        #need to stop player if it goes off screen
         self.x += self.x_speed
         self.y += self.y_speed
         if self.x > screen_width-tile_size:
@@ -115,4 +115,6 @@ class Player2(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        self.rect.x = 200
+
 

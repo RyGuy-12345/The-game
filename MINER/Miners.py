@@ -8,15 +8,15 @@ from player import *
 from dynamite import Dynamite
 
 #make a main menu
-#fix the movement bug
+##fix the movement bug
 #make a closing menu
-#make dirt change color once dug
+
 #make sprites spawn on upper left and right corners of dirt
 ##stop diamonds from spawning in the sky
 #make time.sleep work while mining diamonds
-#make dynamite (line 117)
+##make dynamite (line 117)
 #import sound effects
-#maybe add levels
+
 #display scores on screen while playing
 #insert clock
 
@@ -39,7 +39,7 @@ draw_background(background)
 start_time = pygame.time.get_ticks()
 
 #draw diamond
-num_diamonds = 11
+num_diamonds = 1
 diamond_list = []
 for _ in range(0, num_diamonds):
     diamond_list.append(Diamonds(mine))
@@ -49,6 +49,9 @@ num_dynamite = 3
 dynamite_list = []
 for _ in range(0, num_dynamite):
     dynamite_list.append(Dynamite(mine))
+
+#get mouse position
+mx, my = pygame.mouse.get_pos()
 
 
 #sounds
@@ -61,8 +64,25 @@ p1_score = 0
 player2 = Player2(screen_width/2, screen_height/2)
 p2_score = 0
 
+click = False
+while click == False:
+    pygame.mixer.Sound.play(music)
+    #main menu
+    mine.blit(background, (0, 0))
+    font = pygame.font.Font("../assets/fonts/Montague.ttf", 115)
+    play = font.render("PLAY GAME", True, (0, 0, 0))
+    mine.blit(play, (screen_width/2 - play.get_width()/2, screen_height/2))
+    button_1 = play
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            #(x, y) = pygame.mouse.get_pos()
+           # print(x,y)
+            click = True
+    pygame.display.flip()
+
+
 #when the list is empty set running to false
-while running and diamond_list:
+while running and diamond_list and click:
     pygame.mixer.Sound.play(music)
     for event in pygame.event.get():
         #print(event)
@@ -193,17 +213,25 @@ while running and diamond_list:
 
 
 #create screen for game over
-
+#while click == False:
 mine.blit(background, (0, 0))
-font = pygame.font.Font("../assets/fonts/Montague.ttf", 95)
+font = pygame.font.Font("../assets/fonts/Montague.ttf", 50)
 message = font.render("GAME OVER", True, (0, 0, 0))
 mine.blit(message, (screen_width/2 - message.get_width()/2, screen_height/6))
 score1_text = font.render(f'PLAYER 1 SCORE: {p1_score}', True, (0, 0, 0))
 mine.blit(score1_text, (screen_width/2 - score1_text.get_width()/2, screen_height/4 +score1_text.get_height()))
 score2_text = font.render(f'PLAYER 2 SCORE: {p2_score}', True, (0, 0, 0))
-mine.blit(score2_text, (screen_width/2 - score2_text.get_width()/2, screen_height/2 +score2_text.get_height()))
+mine.blit(score2_text, (screen_width/2 - score2_text.get_width()/2, screen_height/3 +score2_text.get_height()))
+play_again = font.render("PLAY AGAIN", True, (0, 0, 0,))
+mine.blit(play_again, (screen_width/2 - play_again.get_width()/2, screen_height/1.5))
+button_2 = play_again
+quit_text = font.render("QUIT", True, (0, 0, 0))
+mine.blit(quit_text, (screen_width/2 -quit_text.get_width()/2, screen_height/1.25))
+button_3 = quit_text
 pygame.display.flip()
-time.sleep(5)
+
+
+time.sleep(1)
 pygame.quit()
 
 
