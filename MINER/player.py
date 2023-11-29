@@ -58,7 +58,7 @@ class Player1(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-        self.rect.x = 64
+        #self.rect.x = 64
 
 class Player2(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -115,6 +115,6 @@ class Player2(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-        self.rect.x = 200
+        #self.rect.x = 200
 
 

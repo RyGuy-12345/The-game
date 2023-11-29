@@ -262,5 +262,3 @@ while running or click:
 
 #time.sleep(4)
 pygame.quit()
-
-
