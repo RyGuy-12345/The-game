@@ -9,16 +9,14 @@ from dynamite import Dynamite
 
 ##make a main menu
 ##fix the movement bug
-#make a closing menu
+##make a closing menu
+#fix closing menu bug
+##make sprites spawn on upper left and right corners of dirt
 
-#make sprites spawn on upper left and right corners of dirt
-##stop diamonds from spawning in the sky
-#make time.sleep work while mining diamonds
 ##make dynamite (line 117)
-#import sound effects
 
-#display scores on screen while playing
-#insert clock
+
+##insert clock
 
 
 #initialize pygame
@@ -39,7 +37,7 @@ draw_background(background)
 start_time = pygame.time.get_ticks()
 
 #draw diamond
-num_diamonds = 1
+num_diamonds = 11
 diamond_list = []
 for _ in range(0, num_diamonds):
     diamond_list.append(Diamonds(mine))
@@ -59,9 +57,9 @@ music = pygame.mixer.Sound("../assets/sounds/miners song.wav")
 boom = pygame.mixer.Sound("../assets/sounds/hurt.wav")
 
 #inicializining the two players
-player1 = Player1(screen_width/2, screen_height/2)
+player1 = Player1(screen_width/15, screen_height/20)
 p1_score = 0
-player2 = Player2(screen_width/2, screen_height/2)
+player2 = Player2(screen_width/1.05, screen_height/20)
 p2_score = 0
 
 click = False
@@ -70,31 +68,27 @@ while click == False:
     #main menu
     mine.blit(background, (0, 0))
     font = pygame.font.Font("../assets/fonts/Montague.ttf", 55)
-    font1 = pygame.font.Font("../assets/fonts/Montague.ttf", 25)
+    font1 = pygame.font.Font("../assets/fonts/Montague.ttf", 20)
     play = font.render("Click anywhere to PLAY GAME", True, (0, 0, 0))
     mine.blit(play, (screen_width/2 - play.get_width()/2, screen_height/6))
     instructions = font1.render("Try and collect as many Diamonds as you can in 30 seconds!", True, (0, 0, 0))
     mine.blit(instructions, (screen_width / 2 - instructions.get_width() / 2, screen_height / 2.25))
     instructions3 = font1.render("Beware of the hidden Dynamite!!", True, (0, 0, 0))
     mine.blit(instructions3, (screen_width / 2 - instructions3.get_width() / 2, screen_height / 2))
-    instructions1 = font1.render("Player 1(red) use arrow keys to move and press 'm' to mine", True, (0, 0, 0))
+    instructions1 = font1.render("Player 1(red) use arrows to move and press 'm' to mine and 'n' to diffuse bombs", True, (0, 0, 0))
     mine.blit(instructions1, (screen_width / 2 - instructions1.get_width() / 2, screen_height / 1.75))
-    instructions2 =font1.render("player 2(blue) use 'a','s','d','w' to move and 'q' to mine", True, (0, 0, 0))
+    instructions2 =font1.render("player 2(blue) use 'a','s','d','w' to move and '1' to mine and '2' to diffuse bombs", True, (0, 0, 0))
     mine.blit(instructions2, (screen_width / 2 - instructions2.get_width() / 2, screen_height / 1.50))
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
-            (x, y) = pygame.mouse.get_pos()
-            print(x,y)
-            #if (x, y) >= (screen_width/4 - play.get_width()/2, screen_height/4):
             click = True
     pygame.display.flip()
 
 
-
+#main loop
 while running or click:
     pygame.mixer.Sound.play(music)
     for event in pygame.event.get():
-        #print(event)
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
@@ -115,7 +109,6 @@ while running or click:
             if event.key == pygame.K_d:
                 player2.move_right()
         if event.type == pygame.KEYUP:
-            print(event.key)
             if event.key == pygame.K_UP:
                 player1.stop()
             if event.key == pygame.K_DOWN:
@@ -152,7 +145,7 @@ while running or click:
 #calculate time
     running_time = (pygame.time.get_ticks()-start_time) // 1000
 # stop once time reaches 30 sec
-    if running_time >= 30:
+    if running_time >= 5:
         click = False
         running = False
 #draw timer
@@ -167,24 +160,36 @@ while running or click:
 #print diamonds
     for diamond in diamond_list:
         diamond.draw_diamonds(mine)
+        result1 = pygame.sprite.collide_rect(player1, diamond)
+        result2 = pygame.sprite.collide_rect(player2, diamond)
+        #if result1:
+        while result1:
 
-        result1 = pygame.sprite.collide_rect(player1, diamond) and pygame.K_w
-        result2 = pygame.sprite.collide_rect(player2, diamond) and pygame.K_q
-        if result1:
-            #player1.update().pause()
-            diamond_list.pop(idx1)
-            p1_score += 1
-            pygame.mixer.Sound.play(boom)
+            player1.stop()
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_m:
+                        diamond_list.pop(idx1)
+                        p1_score += 1
+                        pygame.mixer.Sound.play(boom)
+                    break
+            break
         #pop when collide with character
         if idx1 == len(diamond_list):
             idx1 = 0
         else:
             idx1 += 1
 
-        if result2:
-            #player2.update().time.sleep()
-            diamond_list.pop(idx2)
-            p2_score += 1
+            while result2:
+                player2.stop()
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_1:
+                            diamond_list.pop(idx2)
+                            p2_score += 1
+                            pygame.mixer.Sound.play(boom)
+                        break
+                break
         if idx2 == len(diamond_list):
             idx2 = 0
         else:
@@ -196,24 +201,33 @@ while running or click:
         dynamite.draw_dynamite(mine)
         bang1 = pygame.sprite.collide_rect(player1, dynamite)
         bang2 = pygame.sprite.collide_rect(player2, dynamite)
-        if bang1:
-            # player1.update().pause()
+        while bang1:
             dynamite.boom(mine)
-            #dynamite_list.pop(idxe1)
-            p1_score -= 1
-            pygame.mixer.Sound.play(boom)
-            # pop when collide with character
+            player1.stop()
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_n:
+                        dynamite_list.pop(idxe1)
+                        p1_score -= 1
+                        pygame.mixer.Sound.play(boom)
+                    break
+            break
         if idxe1 == len(dynamite_list):
             idxe1 = 0
         else:
             idxe1 += 1
 
-        if bang2:
-            # player2.update().time.sleep()
+        while bang2:
             dynamite.boom(mine)
-            #time.sleep(0.5)
-            #dynamite_list.pop(idxe2)
-            p2_score -= 1
+            player2.stop()
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_2:
+                        dynamite_list.pop(idxe2)
+                        p2_score -= 1
+                        pygame.mixer.Sound.play(boom)
+                    break
+            break
         if idxe2 == len(diamond_list):
             idxe2 = 0
         else:
@@ -233,6 +247,7 @@ while running or click:
 
     #create screen for game over
     while running == False:
+       # print(running)
         mine.blit(background, (0, 0))
         font = pygame.font.Font("../assets/fonts/Montague.ttf", 50)
         font2 = pygame.font.Font("../assets/fonts/Montague.ttf", 25)
@@ -251,30 +266,31 @@ while running or click:
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                (x, y) = pygame.mouse.get_pos()
-                print(x,y)
-            #if (x, y) >= (screen_width/4 - play.get_width()/2, screen_height/4):
                 click = True
                 running = True
+                start_time = pygame.time.get_ticks()
+                running_time = (pygame.time.get_ticks()-start_time) // 1000
                 for _ in range(0, num_diamonds):
                     diamond_list.append(Diamonds(mine))
-                player1.update()
-                player1.draw(mine)
-                player2.update()
-                player2.draw(mine)
-            if event.type == pygame.K_SPACE:
-                print('stop')
-                click = False
-                running = False
-            #print(click)
+                player1.stop()
+                player1 = Player1(screen_width / 15, screen_height / 20)
+                player2.stop()
+                player2 = Player2(screen_width / 1.05, screen_height / 20)
 
-        for event in pygame.event.get():
-            if event.type == pygame.K_SPACE:
-                pygame.quit()
+
+            if event.key == pygame.K_SPACE:
                 print('stop')
                 click = False
                 running = False
-            print(click)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+
+                    pygame.quit()
+                    print('stop')
+                    click = False
+                    running = False
+
 
 
 #time.sleep(4)

@@ -1,5 +1,6 @@
 import pygame
 from gameparameters import *
+import time
 
 
 class Player1(pygame.sprite.Sprite):
@@ -108,6 +109,9 @@ class Player2(pygame.sprite.Sprite):
             self.y = 0
         self.rect.x = self.x
         self.rect.y = self.y
+
+    def bang(self):
+        self.time.sleep(1)
 
 
 
