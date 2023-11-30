@@ -54,8 +54,8 @@ mx, my = pygame.mouse.get_pos()
 
 #sounds
 music = pygame.mixer.Sound("../assets/sounds/miners song.wav")
-boom = pygame.mixer.Sound("../assets/sounds/hurt.wav")
-
+boom = pygame.mixer.Sound("../assets/sounds/boom.wav")
+sound = pygame.mixer.Sound("../assets/sounds/inspectorshort.wav")
 #inicializining the two players
 player1 = Player1(screen_width/15, screen_height/20)
 p1_score = 0
@@ -64,7 +64,7 @@ p2_score = 0
 
 click = False
 while click == False:
-    pygame.mixer.Sound.play(music)
+    #pygame.mixer.Sound.play(music)
     #main menu
     mine.blit(background, (0, 0))
     font = pygame.font.Font("../assets/fonts/Montague.ttf", 55)
@@ -87,7 +87,7 @@ while click == False:
 
 #main loop
 while running or click:
-    pygame.mixer.Sound.play(music)
+    #pygame.mixer.Sound.play(music)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -171,7 +171,7 @@ while running or click:
                     if event.key == pygame.K_m:
                         diamond_list.pop(idx1)
                         p1_score += 1
-                        pygame.mixer.Sound.play(boom)
+                        pygame.mixer.Sound.play(sound)
                     break
             break
         #pop when collide with character
@@ -187,7 +187,7 @@ while running or click:
                         if event.key == pygame.K_1:
                             diamond_list.pop(idx2)
                             p2_score += 1
-                            pygame.mixer.Sound.play(boom)
+                            pygame.mixer.Sound.play(sound)
                         break
                 break
         if idx2 == len(diamond_list):
@@ -278,10 +278,10 @@ while running or click:
                 player2 = Player2(screen_width / 1.05, screen_height / 20)
 
 
-            if event.key == pygame.K_SPACE:
+            #if event.key == pygame.K_SPACE:
                 print('stop')
-                click = False
-                running = False
+                #click = False
+                #running = False
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
