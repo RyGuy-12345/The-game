@@ -69,12 +69,12 @@ while click == False:
     pygame.mixer.Sound.play(music)
     #main menu
     mine.blit(background, (0, 0))
-    font = pygame.font.Font("../assets/fonts/Montague.ttf", 100)
+    font = pygame.font.Font("../assets/fonts/Montague.ttf", 50)
     play = font.render("Click anywhere to PLAY GAME", True, (0, 0, 0))
     mine.blit(play, (screen_width/2 - play.get_width()/2, screen_height/2))
-    instructions =
-    instructions1 = font.render("Player 1(red) use arrow keys to move and press 'm' to mine", True(0, 0, 0))
-    instructions2 =
+    #instructions =
+    #instructions1 = font.render("Player 1(red) use arrow keys to move and press 'm' to mine", True(0, 0, 0))
+    #instructions2 =
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             (x, y) = pygame.mouse.get_pos()
