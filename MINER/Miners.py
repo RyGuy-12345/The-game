@@ -6,13 +6,14 @@ from display import *
 from diamonds import *
 from player import *
 from dynamite import Dynamite
+from apple import *
 
 ##make a main menu
 ##fix the movement bug
 ##make a closing menu
-#fix closing menu bug
+##fix closing menu bug
 ##make sprites spawn on upper left and right corners of dirt
-
+#add apple
 ##make dynamite (line 117)
 
 
@@ -37,7 +38,7 @@ draw_background(background)
 start_time = pygame.time.get_ticks()
 
 #draw diamond
-num_diamonds = 11
+num_diamonds = 5
 diamond_list = []
 for _ in range(0, num_diamonds):
     diamond_list.append(Diamonds(mine))
@@ -48,8 +49,12 @@ dynamite_list = []
 for _ in range(0, num_dynamite):
     dynamite_list.append(Dynamite(mine))
 
-#get mouse position
-mx, my = pygame.mouse.get_pos()
+#make apple
+num_apple = 1
+apple_list = []
+for _ in range(0, num_apple):
+    apple_list.append(Apple(mine))
+
 
 
 #sounds
@@ -145,7 +150,7 @@ while running or click:
 #calculate time
     running_time = (pygame.time.get_ticks()-start_time) // 1000
 # stop once time reaches 30 sec
-    if running_time >= 5:
+    if running_time >= 30:
         click = False
         running = False
 #draw timer
@@ -233,6 +238,19 @@ while running or click:
         else:
             idxe2 += 1
 
+    for apple in apple_list:
+        apple.draw_apple(mine)
+        munch1 = pygame.sprite.collide_rect(player1, apple)
+        munch2 = pygame.sprite.collide_rect(player2, apple)
+    if munch1:
+        PLAYER_SPEED1 += 1
+        munchtimer = pygame.time.get_ticks()
+        if munchtimer == running_time-10:
+            PLAYER_SPEED1 -= 1
+            apple_list.pop()
+    if munch2:
+        PLAYER_SPEED2 += 0.25
+
 
 
 
@@ -270,30 +288,27 @@ while running or click:
                 running = True
                 start_time = pygame.time.get_ticks()
                 running_time = (pygame.time.get_ticks()-start_time) // 1000
+                diamond_list = []
                 for _ in range(0, num_diamonds):
                     diamond_list.append(Diamonds(mine))
                 player1.stop()
                 player1 = Player1(screen_width / 15, screen_height / 20)
+                p1_score = 0
                 player2.stop()
                 player2 = Player2(screen_width / 1.05, screen_height / 20)
-
-
-            #if event.key == pygame.K_SPACE:
-                print('stop')
-                #click = False
-                #running = False
-        for event in pygame.event.get():
+                p2_score = 0
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-
-                    pygame.quit()
                     print('stop')
-                    click = False
-                    running = False
+                    pygame.quit()
 
 
 
-#time.sleep(4)
+
+
 pygame.quit()
 
-
+#TODO Helping hand
+#Alex Dachos helped me with the timer
+#Justin Mumaw helped me with the apple power-up
+#I helped Alex with the main menu

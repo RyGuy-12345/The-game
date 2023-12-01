@@ -20,17 +20,17 @@ class Player1(pygame.sprite.Sprite):
         self.y_speed = 0
 
     def move_up(self):
-       self.y_speed = -1*PLAYER_SPEED
+       self.y_speed = -1*PLAYER_SPEED1
 
     def move_down(self):
-        self.y_speed = PLAYER_SPEED
+        self.y_speed = PLAYER_SPEED1
 
     def move_left(self):
-        self.x_speed = -1*PLAYER_SPEED
+        self.x_speed = -1*PLAYER_SPEED1
         self.image = self.imageforward
 
     def move_right(self):
-        self.x_speed = PLAYER_SPEED
+        self.x_speed = PLAYER_SPEED1
         self.image = self.imagebackward
 
 
@@ -78,17 +78,17 @@ class Player2(pygame.sprite.Sprite):
         self.y_speed = 0
 
     def move_up(self):
-       self.y_speed = -1*PLAYER_SPEED
+       self.y_speed = -1*PLAYER_SPEED2
 
     def move_down(self):
-        self.y_speed = PLAYER_SPEED
+        self.y_speed = PLAYER_SPEED2
 
     def move_left(self):
-        self.x_speed = -1*PLAYER_SPEED
+        self.x_speed = -1*PLAYER_SPEED2
         self.image = self.imageforward
 
     def move_right(self):
-        self.x_speed = PLAYER_SPEED
+        self.x_speed = PLAYER_SPEED2
         self.image = self.imagebackward
 
 
