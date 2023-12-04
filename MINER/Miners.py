@@ -238,27 +238,6 @@ while running or click:
         else:
             idxe2 += 1
 
-    for apple in apple_list:
-        apple.draw_apple(mine)
-        munch1 = pygame.sprite.collide_rect(player1, apple)
-        munch2 = pygame.sprite.collide_rect(player2, apple)
-    if munch1:
-        PLAYER_SPEED1 += 1
-        munchtimer = pygame.time.get_ticks()
-        if munchtimer == running_time-10:
-            PLAYER_SPEED1 -= 1
-            apple_list.pop()
-    if munch2:
-        PLAYER_SPEED2 += 0.25
-
-
-
-
-
-
-
-
-
     pygame.display.flip()
 
 
