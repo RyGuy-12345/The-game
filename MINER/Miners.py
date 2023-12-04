@@ -6,30 +6,15 @@ from display import *
 from diamonds import *
 from player import *
 from dynamite import Dynamite
-from apple import *
-
-##make a main menu
-##fix the movement bug
-##make a closing menu
-##fix closing menu bug
-##make sprites spawn on upper left and right corners of dirt
-#add apple
-##make dynamite (line 117)
-
-
-##insert clock
-
 
 #initialize pygame
 pygame.init()
 
 mine = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("the children yern for the mines")
+pygame.display.set_caption("the mines")
 
 #set clock
 clock = pygame.time.Clock()
-
-
 running = True
 background = mine.copy()
 draw_background(background)
@@ -48,14 +33,6 @@ num_dynamite = 3
 dynamite_list = []
 for _ in range(0, num_dynamite):
     dynamite_list.append(Dynamite(mine))
-
-#make apple
-num_apple = 1
-apple_list = []
-for _ in range(0, num_apple):
-    apple_list.append(Apple(mine))
-
-
 
 #sounds
 music = pygame.mixer.Sound("../assets/sounds/miners song.wav")
@@ -131,13 +108,10 @@ while running or click:
             if event.key == pygame.K_d:
                 player2.stop()
 
-
-
 #respon more diamonds when all gone
     if len(diamond_list) == 0:
         for _ in range(0, num_diamonds):
             diamond_list.append(Diamonds(mine))
-
 
 #print mine
     mine.blit(background, (0, 0))
@@ -169,7 +143,6 @@ while running or click:
         result2 = pygame.sprite.collide_rect(player2, diamond)
         #if result1:
         while result1:
-
             player1.stop()
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -184,7 +157,6 @@ while running or click:
             idx1 = 0
         else:
             idx1 += 1
-
             while result2:
                 player2.stop()
                 for event in pygame.event.get():
@@ -199,8 +171,6 @@ while running or click:
             idx2 = 0
         else:
             idx2 += 1
-
-
     #dynamite explotion
     for dynamite in dynamite_list:
         dynamite.draw_dynamite(mine)
@@ -221,7 +191,6 @@ while running or click:
             idxe1 = 0
         else:
             idxe1 += 1
-
         while bang2:
             dynamite.boom(mine)
             player2.stop()
@@ -237,10 +206,7 @@ while running or click:
             idxe2 = 0
         else:
             idxe2 += 1
-
     pygame.display.flip()
-
-
 
     #create screen for game over
     while running == False:
