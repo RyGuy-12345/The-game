@@ -46,7 +46,7 @@ p2_score = 0
 
 click = False
 while click == False:
-    #pygame.mixer.Sound.play(music)
+    pygame.mixer.Sound.play(music)
     #main menu
     mine.blit(background, (0, 0))
     font = pygame.font.Font("../assets/fonts/Montague.ttf", 55)
@@ -69,7 +69,7 @@ while click == False:
 
 #main loop
 while running or click:
-    #pygame.mixer.Sound.play(music)
+    pygame.mixer.Sound.play(music)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -256,4 +256,20 @@ pygame.quit()
 #TODO Helping hand
 #Alex Dachos helped me with the timer
 #Justin Mumaw helped me with the apple power-up
+    #I ended up scrapping this idea because it made the game lag too much, but he still helped with it
 #I helped Alex with the main menu
+#TODO extra points
+#multiplayer
+#keyboard king
+#Tiler
+#Sound Blaster
+#Points-r-us
+#Helping hand
+#Textual
+#tick tock
+#fancy font
+#The walls are hard
+#muzak
+#Main menu
+#all muzak is original
+# most sprites are hand-drawn
